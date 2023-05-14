@@ -1,0 +1,165 @@
+@startuml
+left to right direction
+skin rose
+
+package objects{
+    package clases{
+        Class Soldado{
+            -nombre: String
+            -armaPrimaria: String
+            -armaSecundaria: String
+            +Soldado(nombre: String, armaPrimaria: String, armaSecundaria: String)
+            +getNombre(): String
+            +getArmaPrimaria(): String[]
+            +getArmaSecundaria(): String
+        }
+        Class Arquero{
+            -flechasEnCarcaj: int
+
+            +Arquero(nombre: String, armaPrimaria: String,armaSecundaria: String, flechasEnCarcaj: int)
+            +getFlechasEnCarcaj(): int
+        }
+        Class Vanguardia{
+            -recogerArma: boolean
+
+            +Vanguardia(nombre: String, armaPrimaria: String,recogerArma: boolean, armaSecundaria: String)
+            +isRecogerArma(): boolean
+        }
+        Class Lacayo{
+            -cuchillosEnBolso: int
+
+            +Lacayo(nombre: String, armaPrimaria: String,cuchillosEnBolso: int, armaSecundaria: String)
+            +getCuchillosEnBolso(): int
+        }
+        Class Caballero{
+            -tieneEscudo: boolean
+            +Caballero(armaPrimaria: String, nombre: StringtieneEscudo: boolean, armaSecundaria: String)
+            +isTieneEscudo(): boolean
+        }
+            Soldado ^-- Caballero
+            Soldado ^-- Vanguardia
+            Soldado ^-- Lacayo
+            Soldado ^-- Arquero
+    }
+
+    package subclases{
+        package subclaseArquero{
+            Class ArqueroArcoLargo{
+                -flechasIncendiadas: boolean
+                +ArqueroArcoLargo(nombre: String,flechasEnCarcaj: int, flechasIncendiadas: boolean, armaSecundaria: String, armaPrimaria: String)
+                +isFlechasIncendiadas(): boolean
+            }
+            Class Ballestero{
+                -estandarte: boolean
+                +Ballestero(nombre: String,flechasEnCarcaj: int, estandarte: boolean, armaPrimaria: String, armaSecundaria: String)
+                +isEstandarte(): boolean
+                +setEstandarte(): void
+            }
+            Class Escaramuzador{
+                -soltarMunicion: boolean
+                +Escaramuzador(nombre: String,flechasEnCarcaj: int, soltarMunicion: boolean, armaSecundaria: String, armaPrimaria: String)
+                +isSoltarMunicion(): boolean
+            }
+        }
+        Arquero ^-- ArqueroArcoLargo
+        Arquero ^-- Ballestero
+        Arquero ^-- Escaramuzador
+
+package subclaseVanguardia{
+    Class Devastador{
+        -granadasDeAceite: int
+        +Devastador(nombre: String,recogerArma: boolean, granadasDeAceite: int, armaSecundaria: String, armaPrimaria: String)
+        +getGranadasDeAceite(): int
+    }
+    Class Asaltante{
+        -pinchos: boolean
+
+        +Asaltante(nombre: String, recogerArma: boolean, pinchos: boolean, armaSecundaria: String, armaPrimaria: String)
+        +isPinchos(): boolean
+
+    }
+    Class Emboscador{
+        -vendas: int
+
+        +Emboscador(nombre: String, recogerArma: boolean, vendas: int, armaPrimaria: String, armaSecundaria: String)
+        +getVendas(): int
+    }
+    Vanguardia ^-- Asaltante
+    Vanguardia ^-- Emboscador
+    Vanguardia ^-- Devastador
+    }
+
+package subclasesLacayo{
+    Class Alabardero{
+        -vendas: int
+
+        +Alabardero(nombre: String,cuchillosEnBolso: int, vendas: int, armaSecundaria: String, armaPrimaria: String)
+        +getVendas(): int
+    }
+    Class HombreDeArmas{
+        -armaExperimental: boolean
+
+        +HombreDeArmas(nombre: String, cuchillosEnBolso: int, armaPrimaria: String, armaSecundaria: String, armaExperimental: boolean)
+        +isArmaExperimental(): boolean
+    }
+    Class IngenieroDeCampo{
+        -encenderFuego: boolean
+
+        +IngenieroDeCampo(nombre: String, encenderFuego: boolean, armaPrimaria: String, armaSecundaria: String, cuchillosEnBolso: int)
+        +isEncenderFuego(): boolean
+    }
+    Lacayo ^-- Alabardero
+    Lacayo ^-- IngenieroDeCampo
+    Lacayo ^-- HombreDeArmas
+    }
+
+package subclaseCaballero{
+    Class Oficial{
+        +Oficial(nombre: String,armaPrimaria: String, armaSecundaria: String, tieneEscudo: boolean)
+    }
+    Class Guardian{
+                +Oficial(nombre: String, armaPrimaria: String, armaSecundaria: String, tieneEscudo: boolean)
+    }
+    Class Cruzado{
+            +Oficial(nombre: String, armaPrimaria: String, armaSecundaria: String, tieneEscudo: boolean)
+    }
+    Caballero ^-- Guardian
+    Caballero ^-- Oficial
+    Caballero ^-- Cruzado
+    }
+}
+
+package lists{
+    Class ListaSoldados{
+        -cantSoldados: int
+        -max: int
+        -soldados: Soldado[]
+        +ListaSoldados(max: int)
+        +getMax(): int
+        +getCantSoldados(): int
+        +agregar(soldado: Soldado): void
+        +buscar(): Soldado
+    }
+    ListaSoldados o--* Soldado
+}
+
+package system{
+    interface Sistema <<interface>>{
+        +realizarConsulto(): void
+        +salir(estado: boolean): boolean
+        +clase(): String
+        +subclases(clase: String): String
+        +descripcionClase(clase: String): void
+        +descripcionSubclase(subclase: String): void
+        +desplegarArmas(subclase: String): void
+    }
+
+    Class SistemaImpl{
+        -soldados: ListaSoldados
+        +main(): void
+    }
+
+    SistemaImpl --^ Sistema
+}
+SistemaImpl"1"--"*"Soldado: contiene >
+@enduml
